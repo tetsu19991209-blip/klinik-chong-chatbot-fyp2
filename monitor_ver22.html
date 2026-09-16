@@ -1,0 +1,306 @@
+<!doctype html>
+<!-- Klinik Chong Developer Monitor - Version 22 -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Developer monitor for Klinik Chong chatbot text processing and language routing">
+  <title>Klinik Chong Developer Monitor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="monitor_style_ver22.css">
+</head>
+<body>
+  <main class="monitor-shell">
+    <header class="monitor-header">
+      <div>
+        <p class="eyebrow">KLINIK CHONG · VERSION 19</p>
+        <h1>Developer Monitor</h1>
+        <p>Inspect normalized input, dictionary decisions, mBERT labels, Pinyin2Hanzi HMM conversion and reply-language routing.</p>
+      </div>
+      <button id="back-to-chatbot" type="button">Back to chatbot</button>
+    </header>
+
+    <nav class="monitor-tabs" aria-label="Developer tools">
+      <button class="monitor-tab is-active" type="button" data-monitor-tab="conversation" aria-selected="true">Conversation</button>
+      <button class="monitor-tab" type="button" data-monitor-tab="database" aria-selected="false">Database</button>
+    </nav>
+
+    <section id="conversation-monitor" class="monitor-view">
+
+    <section class="status-grid" aria-label="Session status">
+      <article class="status-card">
+        <span>Total conversation turns</span>
+        <strong id="turn-count">0</strong>
+      </article>
+      <article class="status-card">
+        <span>Detected intention</span>
+        <strong id="detected-intent">—</strong>
+      </article>
+      <article class="status-card">
+        <span>Intention source</span>
+        <strong id="intention-source">—</strong>
+      </article>
+      <article class="status-card">
+        <span>Detected emotion</span>
+        <strong id="detected-emotion">—</strong>
+      </article>
+      <article class="status-card">
+        <span>Reply type</span>
+        <strong id="reply-type">—</strong>
+      </article>
+      <article class="status-card">
+        <span>Reply conversation</span>
+        <strong id="reply-conversation">—</strong>
+      </article>
+      <article class="status-card">
+        <span>Processing status</span>
+        <strong id="processing-status">Waiting</strong>
+      </article>
+      <article class="status-card">
+        <span>Model runtime</span>
+        <strong id="model-runtime-mode">UNKNOWN</strong>
+      </article>
+    </section>
+
+    <section class="panel turn-selector-panel">
+      <label for="turn-selector">Inspect conversation turn</label>
+      <select id="turn-selector" aria-label="Select conversation turn">
+        <option value="">No user query yet</option>
+      </select>
+    </section>
+
+    <section class="input-grid">
+      <article class="panel">
+        <h2>User input</h2>
+        <pre id="original-input">No input received.</pre>
+      </article>
+      <article class="panel">
+        <h2>Input normalized</h2>
+        <pre id="normalized-input">No processed input.</pre>
+      </article>
+    </section>
+
+    <section class="panel">
+      <div class="panel-heading">
+        <div>
+          <h2>Token processing table</h2>
+          <p>Every token shows its final language decision, Pinyin segmentation, mBERT confidence and optional Pinyin2Hanzi HMM transformation.</p>
+        </div>
+        <span id="token-count">0 tokens</span>
+      </div>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>input</th>
+              <th>category</th>
+              <th>language</th>
+              <th>pinyin_segment</th>
+              <th>label_source</th>
+              <th>confidence</th>
+              <th>transform_to</th>
+              <th>transform_source</th>
+            </tr>
+          </thead>
+          <tbody id="token-table-body">
+            <tr class="empty-row"><td colspan="8">No token data yet.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel threshold-panel">
+      <div class="panel-heading">
+        <div>
+          <h2>Token threshold summarization</h2>
+          <p>Hanzi and pinyin are combined as Chinese. Symbols, emojis and standalone numbers are excluded from the threshold denominator.</p>
+        </div>
+      </div>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>input</th>
+              <th>malay</th>
+              <th>chinese</th>
+              <th>other</th>
+              <th>reply_route</th>
+            </tr>
+          </thead>
+          <tbody id="threshold-table-body">
+            <tr class="empty-row"><td colspan="5">No threshold data yet.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="input-grid">
+      <article class="panel">
+        <h2>Reply JSON</h2>
+        <pre id="reply-json">No reply generated.</pre>
+      </article>
+      <article class="panel">
+        <h2>Gibberish rules triggered</h2>
+        <pre id="gibberish-reasons">None.</pre>
+      </article>
+    </section>
+    <section class="input-grid">
+      <article class="panel">
+        <h2>Retrieval route and data</h2>
+        <pre id="retrieval-trace">No RAG or database retrieval for this turn.</pre>
+      </article>
+      <article class="panel">
+        <h2>Retrieved context</h2>
+        <pre id="retrieved-context">No retrieved context for this turn.</pre>
+      </article>
+    </section>
+
+    <section class="input-grid">
+      <article class="panel">
+        <h2>Layer status</h2>
+        <pre id="layer-status">No layer data yet.</pre>
+      </article>
+      <article class="panel">
+        <h2>Loaded resources</h2>
+        <pre id="resource-status">No resource data yet.</pre>
+      </article>
+    </section>
+    </section>
+
+    <section id="database-monitor" class="monitor-view" hidden>
+      <section class="status-grid database-status-grid" aria-label="Database status">
+        <article class="status-card">
+          <span>Connection</span>
+          <strong id="database-connection">Not checked</strong>
+        </article>
+        <article class="status-card">
+          <span>Database</span>
+          <strong id="database-name">—</strong>
+        </article>
+        <article class="status-card">
+          <span>Tables</span>
+          <strong id="database-table-count">0</strong>
+        </article>
+        <article class="status-card">
+          <span>Access</span>
+          <strong>Read + leave control</strong>
+        </article>
+      </section>
+
+      <section class="panel database-intro-panel">
+        <div>
+          <h2>Live Database Explorer</h2>
+          <p id="database-path">Loading the database path…</p>
+        </div>
+        <button id="database-refresh-button" type="button">Refresh database</button>
+      </section>
+
+      <section class="panel database-warning" aria-label="Privacy warning">
+        <strong>Developer-only view</strong>
+        <p>This developer page reads the live SQLite database and can write approved doctor leave records. Patient IC, contact details and clinical notes may be visible; do not show this screen to patients.</p>
+      </section>
+
+      <section class="panel appointment-management-panel" aria-labelledby="appointment-management-title">
+        <div class="panel-heading">
+          <div>
+            <h2 id="appointment-management-title">Appointment Management</h2>
+            <p>Select an appointment to view the complete patient, clinical and appointment details. An unfinished past appointment is displayed as OVERDUE automatically.</p>
+          </div>
+          <button id="appointment-refresh" type="button">Refresh appointments</button>
+        </div>
+        <label class="appointment-selector-label" for="appointment-selector">Select appointment</label>
+        <select id="appointment-selector">
+          <option value="">No appointment selected</option>
+        </select>
+        <div id="appointment-detail" class="appointment-detail">
+          <p class="database-placeholder">Select an appointment to view its details.</p>
+        </div>
+        <div class="appointment-complete-actions">
+          <button id="appointment-complete" type="button" disabled>Mark appointment as complete</button>
+          <p id="appointment-complete-status" aria-live="polite"></p>
+        </div>
+      </section>
+
+      <section class="panel doctor-leave-panel" aria-labelledby="doctor-leave-title">
+        <div class="panel-heading">
+          <div>
+            <h2 id="doctor-leave-title">Doctor Take Leave</h2>
+            <p>Add an APPROVED leave date for a doctor. The booking form will return <code>DOCTOR_ON_LEAVE</code> for that doctor/date.</p>
+          </div>
+          <button id="doctor-leave-toggle" type="button" aria-expanded="false">Doctor take leave</button>
+        </div>
+        <form id="doctor-leave-form" class="doctor-leave-form" hidden>
+          <label>Doctor name
+            <select id="doctor-leave-doctor" required>
+              <option value="">Loading doctors…</option>
+            </select>
+          </label>
+          <label>Take leave date
+            <input id="doctor-leave-date" type="date" required>
+          </label>
+          <label>Leave type
+            <select id="doctor-leave-type" required>
+              <option value="ANNUAL">ANNUAL</option>
+              <option value="MEDICAL">MEDICAL</option>
+              <option value="EMERGENCY">EMERGENCY</option>
+              <option value="OTHER">OTHER</option>
+            </select>
+          </label>
+          <label>Reason (optional)
+            <input id="doctor-leave-reason" type="text" maxlength="300">
+          </label>
+          <button id="doctor-leave-confirm" type="submit">Confirm take leave</button>
+        </form>
+        <p id="doctor-leave-status" class="doctor-leave-status" aria-live="polite"></p>
+      </section>
+
+      <section class="panel database-panel">
+        <div class="panel-heading">
+          <div>
+            <h2>Entity Relationship Diagram</h2>
+            <p>Primary keys are marked PK and foreign keys are marked FK. Arrows point from the child table to the referenced parent table.</p>
+          </div>
+        </div>
+        <div id="database-erd" class="database-erd" aria-live="polite">
+          <svg id="erd-lines" class="erd-lines" aria-hidden="true"></svg>
+          <div id="erd-table-grid" class="erd-table-grid">
+            <p class="database-placeholder">Open the Database tab to load the ERD.</p>
+          </div>
+        </div>
+        <div id="relationship-list" class="relationship-list"></div>
+      </section>
+
+      <section class="panel database-panel">
+        <div class="panel-heading">
+          <div>
+            <h2>Table Records</h2>
+            <p>Select a table to verify the records written into the live database.</p>
+          </div>
+          <span id="record-count" class="record-count">0 records</span>
+        </div>
+        <div id="database-table-buttons" class="database-table-buttons"></div>
+        <div class="table-wrapper database-record-wrapper">
+          <table id="database-record-table">
+            <thead id="database-record-head"></thead>
+            <tbody id="database-record-body">
+              <tr class="empty-row"><td>Select a database table.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p id="database-error" class="database-error" role="alert"></p>
+      </section>
+    </section>
+
+    <footer class="monitor-footer">
+      <p id="last-updated">Last updated: —</p>
+      <button id="refresh-button" type="button">Refresh monitor data</button>
+    </footer>
+  </main>
+
+  <script src="model_config_ver22.js"></script>
+  <script src="monitor_script_ver22.js"></script>
+</body>
+</html>

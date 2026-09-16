@@ -1,0 +1,135 @@
+<!doctype html>
+<!-- Klinik Chong Chatbot Interface - Version 22 -->
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Klinik Chong chatbot interface prototype">
+  <title>Klinik Chong Chatbot</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles_ver22.css">
+</head>
+
+<body>
+  <section id="chatbot-view" class="app-view chatbot-view">
+  <div class="app-shell">
+    <header class="clinic-header">
+      <img class="wallpaper" src="assets/KlinikChongWallpaper.png" alt="Klinik Chong wallpaper">
+      <div class="wallpaper-placeholder" aria-hidden="true">
+        <span>KLINIK CHONG CHATBOT</span>
+        <small>--make your appointment here--</small>
+      </div>
+    </header>
+
+    <main class="chat-card">
+      <section class="chat-topbar" aria-label="Chat status">
+        <div class="bot-avatar"><img src="assets/chatbotpic.png" alt="Klinik Chong Chatbot"></div>
+        <div>
+          <h1>Klinik Chong Assistant</h1>
+          <p><span class="online-dot"></span> Online</p>
+        </div>
+        <button id="developer-view-button" class="view-switch-button" type="button" aria-label="Open developer view">
+          <span aria-hidden="true">🛠️</span> Developer View
+        </button>
+      </section>
+
+      <section class="messages" aria-label="Conversation">
+        <div class="date-label">Today</div>
+      </section>
+
+      <section class="composer-area" aria-label="Message composer">
+        <details class="emoji-picker">
+          <summary aria-label="Open emotion picker">
+            <span class="icon-placeholder">☺</span>
+            <span class="summary-text">Emotion</span>
+          </summary>
+          <div class="emoji-panel">
+            <div class="emoji-panel-title">
+              <div>
+                <strong>How are you feeling?</strong>
+                <span>Select one emotion</span>
+              </div>
+              <button id="emoji-close-button" class="emoji-close-button" type="button" aria-label="Close emotion list">Cancel</button>
+            </div>
+            <div class="emoji-grid">
+              <button type="button" data-emoji="😊" aria-label="Insert Happy emoji"><span>😊</span>Happy</button>
+              <button type="button" data-emoji="😢" aria-label="Insert Sad emoji"><span>😢</span>Sad</button>
+              <button type="button" data-emoji="😠" aria-label="Insert Angry emoji"><span>😠</span>Angry</button>
+              <button type="button" data-emoji="🚨" aria-label="Insert Emergency emoji"><span>🚨</span>Emergency</button>
+              <button type="button" data-emoji="😨" aria-label="Insert Afraid emoji"><span>😨</span>Afraid</button>
+              <button type="button" data-emoji="🤢" aria-label="Insert Nauseous emoji"><span>🤢</span>Nauseous</button>
+              <button type="button" data-emoji="❓" aria-label="Insert Confused emoji"><span>❓</span>Confused</button>
+              <button type="button" data-emoji="👋" aria-label="Insert Hello emoji"><span>👋</span>Hello</button>
+              <button type="button" data-emoji="👋" aria-label="Insert Goodbye emoji"><span>👋</span>Goodbye</button>
+              <button type="button" data-emoji="🙂" aria-label="Insert Smile emoji"><span>🙂</span>Smile</button>
+              <button type="button" data-emoji="🙏" aria-label="Insert Thankful emoji"><span>🙏</span>Thankful</button>
+              <button type="button" data-emoji="😅" aria-label="Insert Embarrassed emoji"><span>😅</span>Embarrassed</button>
+              <button type="button" data-emoji="❤️" aria-label="Insert Love emoji"><span>❤️</span>Love</button>
+              <button type="button" data-emoji="😂" aria-label="Insert Laughing emoji"><span>😂</span>Laughing</button>
+              <button type="button" data-emoji="😮" aria-label="Insert Surprised emoji"><span>😮</span>Surprised</button>
+              <button type="button" data-emoji="😴" aria-label="Insert Sleepy emoji"><span>😴</span>Sleepy</button>
+              <button type="button" data-emoji="🤬" aria-label="Insert Swearing emoji"><span>🤬</span>Swearing</button>
+              <button type="button" data-emoji="😳" aria-label="Insert Shy emoji"><span>😳</span>Shy</button>
+              <button type="button" data-emoji="🤕" aria-label="Insert Headache emoji"><span>🤕</span>Headache</button>
+              <button type="button" data-emoji="🌧️" aria-label="Insert Depressed emoji"><span>🌧️</span>Depressed</button>
+            </div>
+            <p class="asset-note">Replace these symbols later with your images in <code>assets/emojis/</code>.</p>
+          </div>
+        </details>
+
+        <div class="composer">
+          <label class="sr-only" for="message-input">Type your message</label>
+          <textarea id="message-input" maxlength="120" rows="1" placeholder="Type your message here..."
+            aria-describedby="character-limit"></textarea>
+          <span id="character-limit" class="character-limit">Max. 120 characters</span>
+          <button id="send-button" class="send-button" type="button" aria-label="Send message">
+            <img src="assets/send-icon.png" alt="">
+            <span class="send-placeholder">➤</span>
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <footer class="clinic-footer">
+      <div>
+        <strong>Klinik Chong</strong>
+        <span>Clinic hours · Contact · Location</span>
+      </div>
+      <p>Your information is kept private. This chatbot does not replace professional medical advice.</p>
+      <p class="emergency-note">For a life-threatening emergency, call 999 immediately.</p>
+      <p class="emergency-legal-warning">
+        <span><strong>紧急辅助使用警告：</strong>本功能仅供真实紧急情况使用。请谨慎使用；若用于诈骗、虚假紧急通报或骚扰，使用者可能承担相应法律责任。</span>
+        <span><strong>Amaran penggunaan bantuan kecemasan:</strong> Fungsi ini hanya untuk kecemasan sebenar. Gunakan dengan bertanggungjawab; penyalahgunaan bagi penipuan, laporan kecemasan palsu atau gangguan boleh mengakibatkan tindakan undang-undang.</span>
+      </p>
+      <p class="footer-live-time">
+        Malaysia Time · 马来西亚时间:
+        <time id="footer-live-clock" datetime=""></time>
+      </p>
+      <small>© 2026 Klinik Chong. All rights reserved.</small>
+      <button id="footer-developer-button" class="developer-monitor-link" type="button">🛠️ Open Developer Monitor</button>
+    </footer>
+  </div>
+  </section>
+
+  <section id="developer-view" class="app-view developer-view" hidden>
+    <header class="developer-view-toolbar">
+      <div>
+        <strong>Klinik Chong Developer View</strong>
+        <span>Chatbot state and conversation stay active while this view is open.</span>
+      </div>
+      <button id="developer-back-button" type="button">← Back to Chatbot</button>
+    </header>
+    <iframe id="developer-monitor-frame" class="developer-monitor-frame" src="monitor_ver22.html" title="Klinik Chong Developer Monitor"></iframe>
+  </section>
+
+  <script src="model_config_ver22.js"></script>
+  <script src="resource_data_ver22.js"></script>
+  <script src="text_processing_data_ver22.js"></script>
+  <script src="reply_data_ver22.js"></script>
+  <script src="script_ver22.js?v=20260915-pinyin-state-fix"></script>
+</body>
+
+</html>

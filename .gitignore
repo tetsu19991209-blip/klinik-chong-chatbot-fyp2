@@ -1,0 +1,42 @@
+# Credentials and local configuration
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+credentials*.json
+secrets*.json
+
+# Patient, clinic and retrieval data
+*.db
+*.sqlite
+*.sqlite3
+data/
+chroma_db/
+klinik_chong_database/
+
+# Trained models and large generated artefacts
+models/
+Trained Model/
+mBert_language_detect_model/
+pinyin2hanzi_hmm_model/
+*.joblib
+*.safetensors
+*.pt
+*.pth
+
+# Runtime and tunnel files
+*.log
+*.pid
+.cloudflared/
+cloudflared*
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Editors and operating systems
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

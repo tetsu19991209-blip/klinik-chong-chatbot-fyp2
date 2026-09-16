@@ -1,0 +1,15 @@
+fastapi>=0.115
+uvicorn>=0.30
+pydantic>=2.7
+torch
+transformers
+joblib
+numpy
+chromadb
+sentence-transformers
+langchain-core
+langchain-openai
+openai
+twilio>=9.0
+python-dotenv>=1.0
+
